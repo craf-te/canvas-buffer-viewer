@@ -1,4 +1,4 @@
-class C {
+class k {
   constructor(t = 10) {
     this._lastCapture = 0, this._interval = 1e3 / t;
   }
@@ -9,7 +9,7 @@ class C {
     return t - this._lastCapture < this._interval ? !1 : (this._lastCapture = t, !0);
   }
 }
-const B = (
+const I = (
   /* css */
   `
   :host {
@@ -214,17 +214,6 @@ const B = (
     cursor: pointer;
   }
 
-  /* Hide thumbnails in single-view mode, show only selected */
-  :host-context(.single-view) {
-    display: none;
-  }
-
-  :host-context(.single-view):host(.selected) {
-    display: flex;
-    height: 100%;
-    width: 100%;
-  }
-
   .fbv-buffer-header {
     display: flex;
     align-items: center;
@@ -306,7 +295,7 @@ const B = (
   }
 `
 );
-class W extends HTMLElement {
+class A extends HTMLElement {
   constructor() {
     super(), this._label = "", this._lastWidth = 0, this._lastHeight = 0, this._lastNote = void 0, this.attachShadow({ mode: "open" });
   }
@@ -340,44 +329,44 @@ class W extends HTMLElement {
   _updateLabelText() {
     this._lastWidth > 0 && this._lastHeight > 0 ? this._labelEl.textContent = `${this._label} (${this._lastWidth}x${this._lastHeight})` : this._labelEl.textContent = this._label;
   }
-  updateImage(t, e, i, n = !0, s) {
+  updateImage(t, e, i, s = !0, n) {
     if (!this.canvas) return;
-    (this.canvas.width !== e || this.canvas.height !== i) && (this.canvas.width = e, this.canvas.height = i), (this._lastWidth !== e || this._lastHeight !== i) && (this._lastWidth = e, this._lastHeight = i, this._updateLabelText()), this._lastNote !== s && (this._lastNote = s, s ? (this._noteEl.style.display = "block", this._noteTextEl.textContent = s, this._noteEl.title = s, this._noteTextEl.style.animation = "none", this._noteTextEl.offsetWidth, this._noteTextEl.style.animation = "") : (this._noteEl.style.display = "none", this._noteTextEl.textContent = "", this._noteEl.title = ""));
-    const l = this.ctx.createImageData(e, i);
-    if (n)
-      for (let h = 0; h < i; h++) {
-        const a = (i - 1 - h) * e * 4, o = h * e * 4;
-        l.data.set(t.subarray(a, a + e * 4), o);
+    (this.canvas.width !== e || this.canvas.height !== i) && (this.canvas.width = e, this.canvas.height = i), (this._lastWidth !== e || this._lastHeight !== i) && (this._lastWidth = e, this._lastHeight = i, this._updateLabelText()), this._lastNote !== n && (this._lastNote = n, n ? (this._noteEl.style.display = "block", this._noteTextEl.textContent = n, this._noteEl.title = n, this._noteTextEl.style.animation = "none", this._noteTextEl.offsetWidth, this._noteTextEl.style.animation = "") : (this._noteEl.style.display = "none", this._noteTextEl.textContent = "", this._noteEl.title = ""));
+    const o = this.ctx.createImageData(e, i);
+    if (s)
+      for (let r = 0; r < i; r++) {
+        const d = (i - 1 - r) * e * 4, l = r * e * 4;
+        o.data.set(t.subarray(d, d + e * 4), l);
       }
     else
-      l.data.set(t);
-    this.ctx.putImageData(l, 0, 0);
+      o.data.set(t);
+    this.ctx.putImageData(o, 0, 0);
   }
   dispose() {
     this.remove();
   }
 }
-customElements.get("fbv-thumbnail") || customElements.define("fbv-thumbnail", W);
-const k = "fbv-state", v = 420, g = 240, y = 12, I = 4, E = 4, H = 22;
-function M(r, t, e) {
+customElements.get("fbv-thumbnail") || customElements.define("fbv-thumbnail", A);
+const R = "fbv-state", f = 420, u = 240, v = 12, M = 4, g = 4, C = 22;
+function H(a, t, e) {
   if (e <= 0) return { cols: 1, rows: 1, cellArea: 0 };
   if (e === 1) {
-    const l = r - E * 2, h = t - E * 2;
-    return { cols: 1, rows: 1, cellArea: l * h };
+    const o = a - g * 2, r = t - g * 2;
+    return { cols: 1, rows: 1, cellArea: o * r };
   }
-  const i = r - E * 2, n = t - E * 2;
-  let s = { cols: 1, rows: e, cellArea: 0 };
-  for (let l = 1; l <= e; l++) {
-    const h = Math.ceil(e / l), a = (i - I * (l - 1)) / l, o = (n - I * (h - 1)) / h;
-    if (a < 60 || o < 40) continue;
-    const d = a * o;
-    d > s.cellArea && (s = { cols: l, rows: h, cellArea: d });
+  const i = a - g * 2, s = t - g * 2;
+  let n = { cols: 1, rows: e, cellArea: 0 };
+  for (let o = 1; o <= e; o++) {
+    const r = Math.ceil(e / o), d = (i - M * (o - 1)) / o, l = (s - M * (r - 1)) / r;
+    if (d < 60 || l < 40) continue;
+    const h = d * l;
+    h > n.cellArea && (n = { cols: o, rows: r, cellArea: h });
   }
-  return s;
+  return n;
 }
-class P extends HTMLElement {
+class $ extends HTMLElement {
   constructor() {
-    super(), this._corner = "top-right", this._initialPosSet = !1, this._preMaxState = null, this._popoutWindow = null, this._popoutCheckInterval = null, this._selectedLabel = null, this._resizeObserver = null, this.attachShadow({ mode: "open" }), this._state = this._loadState(), this._boundEscHandler = (t) => {
+    super(), this._corner = "top-right", this._initialPosSet = !1, this._preMaxState = null, this._selectedLabel = null, this._resizeObserver = null, this.attachShadow({ mode: "open" }), this._state = this._loadState(), this._boundEscHandler = (t) => {
       t.key === "Escape" && (this._selectedLabel !== null ? this.deselectItem() : this._state.maximized && this._toggleMaximize(!1));
     };
   }
@@ -386,7 +375,7 @@ class P extends HTMLElement {
   }
   disconnectedCallback() {
     var t;
-    document.removeEventListener("keydown", this._boundEscHandler), (t = this._resizeObserver) == null || t.disconnect(), this._resizeObserver = null, this._closePopout();
+    document.removeEventListener("keydown", this._boundEscHandler), (t = this._resizeObserver) == null || t.disconnect(), this._resizeObserver = null;
   }
   set corner(t) {
     this._corner = t, this._applyBottomAttribute(), !this._initialPosSet && this._state.top === null && this._state.left === null && this._applyDefaultCornerPos();
@@ -397,12 +386,11 @@ class P extends HTMLElement {
   _render() {
     if (!this.shadowRoot) return;
     this.shadowRoot.innerHTML = `
-      <style>${B}</style>
+      <style>${I}</style>
       <div class="fbv-panel">
         <div class="fbv-header">
           <button class="fbv-header-btn back-btn" title="リストに戻る" style="display:none;">←</button>
           <span class="fbv-header-title">Framebuffer Viewer</span>
-          <button class="fbv-header-btn popout-btn" title="別ウィンドウで表示">↗</button>
           <button class="fbv-header-btn reset-btn" title="Reset Position">↺</button>
           <button class="fbv-header-btn minimize-btn" title="Minimize">−</button>
           <button class="fbv-header-btn restore-btn" title="Restore" style="display:none;">□</button>
@@ -415,7 +403,7 @@ class P extends HTMLElement {
         <div class="fbv-resize fbv-resize-bl"></div>
         <div class="fbv-resize fbv-resize-br"></div>
       </div>
-    `, this._panelEl = this.shadowRoot.querySelector(".fbv-panel"), this._gridEl = this.shadowRoot.querySelector(".fbv-grid"), this._minimizeBtn = this.shadowRoot.querySelector(".minimize-btn"), this._restoreBtn = this.shadowRoot.querySelector(".restore-btn"), this._maximizeBtn = this.shadowRoot.querySelector(".maximize-btn"), this._unmaximizeBtn = this.shadowRoot.querySelector(".unmaximize-btn"), this._backBtn = this.shadowRoot.querySelector(".back-btn"), this._popoutBtn = this.shadowRoot.querySelector(".popout-btn");
+    `, this._panelEl = this.shadowRoot.querySelector(".fbv-panel"), this._gridEl = this.shadowRoot.querySelector(".fbv-grid"), this._minimizeBtn = this.shadowRoot.querySelector(".minimize-btn"), this._restoreBtn = this.shadowRoot.querySelector(".restore-btn"), this._maximizeBtn = this.shadowRoot.querySelector(".maximize-btn"), this._unmaximizeBtn = this.shadowRoot.querySelector(".unmaximize-btn"), this._backBtn = this.shadowRoot.querySelector(".back-btn");
     const t = this.shadowRoot.querySelector(".fbv-header"), e = this.shadowRoot.querySelector(".reset-btn");
     this._initDrag(t), this._initResize(), this._minimizeBtn.addEventListener("click", (i) => {
       i.stopPropagation(), this._toggleMinimize(!0);
@@ -429,13 +417,11 @@ class P extends HTMLElement {
       i.stopPropagation(), this._resetState();
     }), this._backBtn.addEventListener("click", (i) => {
       i.stopPropagation(), this.deselectItem();
-    }), this._popoutBtn.addEventListener("click", (i) => {
-      i.stopPropagation(), this._togglePopout();
     }), this._gridEl.addEventListener("click", (i) => {
-      const n = i.target.closest("fbv-thumbnail");
-      if (!n) return;
-      const s = n.dataset.label;
-      s && (this._selectedLabel === s ? this.deselectItem() : this.selectItem(s));
+      const s = i.target.closest("fbv-thumbnail");
+      if (!s) return;
+      const n = s.dataset.label;
+      n && (this._selectedLabel === n ? this.deselectItem() : this.selectItem(n));
     });
   }
   // --- External API ---
@@ -467,7 +453,7 @@ class P extends HTMLElement {
   // --- Internal State & Layout ---
   _updateGridColumns() {
     if (!this._gridEl || !this._panelEl) return;
-    const t = this._panelEl.clientWidth, e = this._panelEl.clientHeight - H, i = M(t, e, this.items.length);
+    const t = this._panelEl.clientWidth, e = this._panelEl.clientHeight - C, i = H(t, e, this.items.length);
     this._gridEl.style.gridTemplateColumns = `repeat(${i.cols}, 1fr)`, this._gridEl.style.gridTemplateRows = `repeat(${i.rows}, 1fr)`;
   }
   _initResizeObserver() {
@@ -477,7 +463,7 @@ class P extends HTMLElement {
   }
   _loadState() {
     try {
-      const t = sessionStorage.getItem(k);
+      const t = sessionStorage.getItem(R);
       if (t) {
         const e = JSON.parse(t);
         return "selectedLabel" in e || (e.selectedLabel = null), e;
@@ -485,8 +471,8 @@ class P extends HTMLElement {
     } catch {
     }
     return {
-      width: v,
-      height: g,
+      width: f,
+      height: u,
       top: null,
       left: null,
       minimized: !1,
@@ -496,7 +482,7 @@ class P extends HTMLElement {
   }
   _saveState() {
     try {
-      sessionStorage.setItem(k, JSON.stringify(this._state));
+      sessionStorage.setItem(R, JSON.stringify(this._state));
     } catch {
     }
   }
@@ -505,8 +491,8 @@ class P extends HTMLElement {
   }
   _resetState() {
     this._state = {
-      width: v,
-      height: g,
+      width: f,
+      height: u,
       top: null,
       left: null,
       minimized: !1,
@@ -516,9 +502,9 @@ class P extends HTMLElement {
   }
   _applyDefaultCornerPos() {
     if (!this._panelEl) return;
-    this._panelEl.style.width = `${v}px`, this._panelEl.style.height = `${g}px`, this._panelEl.style.right = "", this._panelEl.style.bottom = "";
-    const t = this._corner.indexOf("top") >= 0, e = this._corner.indexOf("left") >= 0, i = t ? y : window.innerHeight - g - y, n = e ? y : window.innerWidth - v - y;
-    this._panelEl.style.top = `${i}px`, this._panelEl.style.left = `${n}px`, this._state.top = i, this._state.left = n, this._state.width = v, this._state.height = g;
+    this._panelEl.style.width = `${f}px`, this._panelEl.style.height = `${u}px`, this._panelEl.style.right = "", this._panelEl.style.bottom = "";
+    const t = this._corner.indexOf("top") >= 0, e = this._corner.indexOf("left") >= 0, i = t ? v : window.innerHeight - u - v, s = e ? v : window.innerWidth - f - v;
+    this._panelEl.style.top = `${i}px`, this._panelEl.style.left = `${s}px`, this._state.top = i, this._state.left = s, this._state.width = f, this._state.height = u;
   }
   _toggleMinimize(t, e = !0) {
     this._state.minimized = t, t ? (this.setAttribute("minimized", ""), this._minimizeBtn.style.display = "none", this._restoreBtn.style.display = "", this._state.maximized && this._toggleMaximize(!1, !1)) : (this.removeAttribute("minimized"), this._minimizeBtn.style.display = "", this._restoreBtn.style.display = "none"), e && this._saveState();
@@ -533,181 +519,49 @@ class P extends HTMLElement {
   }
   // --- Drag & Drop ---
   _initDrag(t) {
-    let e = 0, i = 0, n = 0, s = 0;
-    const l = (o) => {
-      let d = n + (o.clientX - e), b = s + (o.clientY - i);
-      this._panelEl.style.left = `${d}px`, this._panelEl.style.top = `${b}px`;
-    }, h = () => {
-      this._panelEl.classList.remove("dragging"), document.removeEventListener("mousemove", l), document.removeEventListener("mouseup", h);
-      const o = this._panelEl.getBoundingClientRect();
-      this._state.left = o.left, this._state.top = o.top, this._saveState();
-    }, a = (o) => {
-      if (o.target.tagName.toLowerCase() === "button" || this._state.maximized) return;
-      o.preventDefault(), this._panelEl.classList.add("dragging");
-      const d = this._panelEl.getBoundingClientRect();
-      e = o.clientX, i = o.clientY, n = d.left, s = d.top, document.addEventListener("mousemove", l), document.addEventListener("mouseup", h);
+    let e = 0, i = 0, s = 0, n = 0;
+    const o = (l) => {
+      let h = s + (l.clientX - e), b = n + (l.clientY - i);
+      this._panelEl.style.left = `${h}px`, this._panelEl.style.top = `${b}px`;
+    }, r = () => {
+      this._panelEl.classList.remove("dragging"), document.removeEventListener("mousemove", o), document.removeEventListener("mouseup", r);
+      const l = this._panelEl.getBoundingClientRect();
+      this._state.left = l.left, this._state.top = l.top, this._saveState();
+    }, d = (l) => {
+      if (l.target.tagName.toLowerCase() === "button" || this._state.maximized) return;
+      l.preventDefault(), this._panelEl.classList.add("dragging");
+      const h = this._panelEl.getBoundingClientRect();
+      e = l.clientX, i = l.clientY, s = h.left, n = h.top, document.addEventListener("mousemove", o), document.addEventListener("mouseup", r);
     };
-    t.addEventListener("mousedown", a), this._panelEl.addEventListener("mousedown", (o) => {
-      const d = o.target;
-      d.closest(".fbv-grid") || d.closest(".fbv-resize") || d.closest(".fbv-header") || d.closest("fbv-thumbnail") || a(o);
+    t.addEventListener("mousedown", d), this._panelEl.addEventListener("mousedown", (l) => {
+      const h = l.target;
+      h.closest(".fbv-grid") || h.closest(".fbv-resize") || h.closest(".fbv-header") || h.closest("fbv-thumbnail") || d(l);
     });
   }
   // --- Resize ---
   _initResize() {
     ["tl", "tr", "bl", "br"].forEach((e) => {
-      var n;
-      const i = (n = this.shadowRoot) == null ? void 0 : n.querySelector(`.fbv-resize-${e}`);
-      i && i.addEventListener("mousedown", (s) => {
+      var s;
+      const i = (s = this.shadowRoot) == null ? void 0 : s.querySelector(`.fbv-resize-${e}`);
+      i && i.addEventListener("mousedown", (n) => {
         if (this._state.maximized) return;
-        s.preventDefault(), s.stopPropagation(), this._panelEl.classList.add("resizing");
-        const l = s.clientX, h = s.clientY, a = this._panelEl.getBoundingClientRect(), o = a.width, d = a.height, b = a.top, c = a.left, _ = (p) => {
-          const m = p.clientX - l, z = p.clientY - h;
-          let x = o, w = d, L = b, S = c;
-          e === "tl" || e === "bl" ? (x = Math.max(200, o - m), S = c + (o - x)) : x = Math.max(200, o + m), e === "tl" || e === "tr" ? (w = Math.max(120, d - z), L = b + (d - w)) : w = Math.max(120, d + z), this._panelEl.style.width = `${x}px`, this._panelEl.style.height = `${w}px`, this._panelEl.style.top = `${L}px`, this._panelEl.style.left = `${S}px`;
-        }, f = () => {
-          this._panelEl.classList.remove("resizing"), document.removeEventListener("mousemove", _), document.removeEventListener("mouseup", f);
+        n.preventDefault(), n.stopPropagation(), this._panelEl.classList.add("resizing");
+        const o = n.clientX, r = n.clientY, d = this._panelEl.getBoundingClientRect(), l = d.width, h = d.height, b = d.top, x = d.left, y = (p) => {
+          const E = p.clientX - o, z = p.clientY - r;
+          let _ = l, m = h, L = b, S = x;
+          e === "tl" || e === "bl" ? (_ = Math.max(200, l - E), S = x + (l - _)) : _ = Math.max(200, l + E), e === "tl" || e === "tr" ? (m = Math.max(120, h - z), L = b + (h - m)) : m = Math.max(120, h + z), this._panelEl.style.width = `${_}px`, this._panelEl.style.height = `${m}px`, this._panelEl.style.top = `${L}px`, this._panelEl.style.left = `${S}px`;
+        }, w = () => {
+          this._panelEl.classList.remove("resizing"), document.removeEventListener("mousemove", y), document.removeEventListener("mouseup", w);
           const p = this._panelEl.getBoundingClientRect();
           this._state.width = p.width, this._state.height = p.height, this._state.top = p.top, this._state.left = p.left, this._saveState();
         };
-        document.addEventListener("mousemove", _), document.addEventListener("mouseup", f);
+        document.addEventListener("mousemove", y), document.addEventListener("mouseup", w);
       });
     });
   }
-  // --- Popout Window ---
-  _togglePopout() {
-    if (this._popoutWindow && !this._popoutWindow.closed) {
-      this._popoutWindow.focus();
-      return;
-    }
-    const t = Math.max(this._state.width, 500), e = Math.max(this._state.height, 400), i = window.screenX + (window.innerWidth - t) / 2, n = window.screenY + (window.innerHeight - e) / 2;
-    if (this._popoutWindow = window.open(
-      "",
-      "fbv-popout",
-      `width=${t},height=${e},left=${i},top=${n},resizable=yes`
-    ), !this._popoutWindow) {
-      console.warn("Framebuffer Viewer: Popup blocked");
-      return;
-    }
-    const s = this._popoutWindow.document;
-    s.title = "Framebuffer Viewer", s.head.innerHTML = `
-      <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body {
-          width: 100%;
-          height: 100%;
-          background: #1a1a1a;
-          font-family: monospace;
-          overflow: hidden;
-        }
-        .popout-container {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-        }
-        .popout-header {
-          display: flex;
-          align-items: center;
-          padding: 6px 10px;
-          background: rgba(255, 255, 255, 0.1);
-          color: #fff;
-          font-size: 12px;
-          user-select: none;
-        }
-        .popout-header-title {
-          flex: 1;
-        }
-        .popout-header-btn {
-          width: 24px;
-          height: 24px;
-          margin-left: 4px;
-          padding: 0;
-          border: none;
-          background: none;
-          color: rgba(255, 255, 255, 0.6);
-          font-size: 16px;
-          cursor: pointer;
-          border-radius: 2px;
-        }
-        .popout-header-btn:hover {
-          background: rgba(255, 255, 255, 0.15);
-          color: #fff;
-        }
-        .popout-grid {
-          flex: 1;
-          display: grid;
-          gap: 4px;
-          padding: 4px;
-          overflow: hidden;
-        }
-        .popout-grid.single-view {
-          display: block;
-          padding: 0;
-        }
-        .popout-grid.single-view fbv-thumbnail {
-          display: none;
-        }
-        .popout-grid.single-view fbv-thumbnail.selected {
-          display: flex;
-          height: 100%;
-          width: 100%;
-        }
-      </style>
-    `;
-    const l = s.createElement("div");
-    l.className = "popout-container";
-    const h = s.createElement("div");
-    h.className = "popout-header", h.innerHTML = `
-      <button class="popout-header-btn back-btn" title="リストに戻る" style="display:${this._selectedLabel ? "" : "none"};">←</button>
-      <span class="popout-header-title">Framebuffer Viewer</span>
-      <button class="popout-header-btn dock-btn" title="元に戻す">↙</button>
-    `;
-    const a = s.createElement("div");
-    if (a.className = "popout-grid", this._selectedLabel && a.classList.add("single-view"), l.appendChild(h), l.appendChild(a), s.body.appendChild(l), a.appendChild(this._gridEl), this._selectedLabel) {
-      const c = this.getItem(this._selectedLabel);
-      c && c.classList.add("selected");
-    }
-    this._panelEl.style.display = "none";
-    const o = s.querySelector(".back-btn"), d = s.querySelector(".dock-btn");
-    o == null || o.addEventListener("click", () => {
-      this.deselectItem(), o.style.display = "none", a.classList.remove("single-view");
-    }), d == null || d.addEventListener("click", () => {
-      this._closePopout();
-    }), a.addEventListener("click", (c) => {
-      const _ = c.composedPath();
-      let f = null;
-      for (const m of _)
-        if (m instanceof HTMLElement && m.tagName.toLowerCase() === "fbv-thumbnail") {
-          f = m;
-          break;
-        }
-      if (!f) return;
-      const p = f.dataset.label;
-      p && (this._selectedLabel === p ? (this.deselectItem(), o.style.display = "none", a.classList.remove("single-view")) : (this.selectItem(p), o.style.display = "", a.classList.add("single-view")));
-    }), s.addEventListener("keydown", (c) => {
-      c.key === "Escape" && this._selectedLabel !== null && (this.deselectItem(), o.style.display = "none", a.classList.remove("single-view"));
-    });
-    const b = () => {
-      if (!this._popoutWindow || this._popoutWindow.closed) return;
-      const c = 36, _ = this._popoutWindow.innerWidth, f = this._popoutWindow.innerHeight - c, p = M(_, f, this.items.length);
-      a.style.gridTemplateColumns = `repeat(${p.cols}, 1fr)`, a.style.gridTemplateRows = `repeat(${p.rows}, 1fr)`;
-    };
-    this._popoutWindow.addEventListener("resize", b), b(), this._popoutCheckInterval = window.setInterval(() => {
-      this._popoutWindow && this._popoutWindow.closed && this._onPopoutClosed(a);
-    }, 200);
-  }
-  _onPopoutClosed(t) {
-    this._popoutCheckInterval && (clearInterval(this._popoutCheckInterval), this._popoutCheckInterval = null), t.contains(this._gridEl) && this._panelEl.insertBefore(this._gridEl, this._panelEl.querySelector(".fbv-resize")), this._panelEl.style.display = "", this._popoutWindow = null, this._backBtn.style.display = this._selectedLabel ? "" : "none", this._selectedLabel && this._gridEl.classList.add("single-view"), this._updateGridColumns();
-  }
-  _closePopout() {
-    if (this._popoutWindow && !this._popoutWindow.closed) {
-      const t = this._popoutWindow.document.querySelector(".popout-grid");
-      this._popoutWindow.close(), t && this._onPopoutClosed(t);
-    }
-  }
 }
-customElements.get("fbv-panel") || customElements.define("fbv-panel", P);
-class $ {
+customElements.get("fbv-panel") || customElements.define("fbv-panel", $);
+class D {
   constructor(t = "top-right") {
     this._panel = null, this._corner = t;
   }
@@ -737,12 +591,12 @@ class $ {
     this.unmount();
   }
 }
-const u = class u {
+const c = class c {
   constructor(t = {}) {
-    this._slots = /* @__PURE__ */ new Map(), this._disposed = !1, this._fps = t.fps ?? 10, this._overlay = new $(t.corner ?? "top-right"), this._active = !1, t.active !== !1 && (this.active = !0);
+    this._slots = /* @__PURE__ */ new Map(), this._disposed = !1, this._fps = t.fps ?? 10, this._overlay = new D(t.corner ?? "top-right"), this._active = !1, t.active !== !1 && (this.active = !0);
   }
   static getInstance(t) {
-    return u._instance || (u._instance = new u(t)), u._instance;
+    return c._instance || (c._instance = new c(t)), c._instance;
   }
   get active() {
     return this._active;
@@ -768,50 +622,50 @@ const u = class u {
    */
   capture(t, e, i) {
     if (!this._active || this._disposed) return;
-    const n = this._getOrCreateSlot(t), s = performance.now();
-    if (!n.scheduler.shouldCapture(s)) return;
-    const l = e(), h = l.width ?? n.panel.lastWidth, a = l.height ?? n.panel.lastHeight;
-    if (!h || !a)
+    const s = this._getOrCreateSlot(t), n = performance.now();
+    if (!s.scheduler.shouldCapture(n)) return;
+    const o = e(), r = o.width ?? s.panel.lastWidth, d = o.height ?? s.panel.lastHeight;
+    if (!r || !d)
       throw new Error(
         `[BufferViewer] "${t}": width/height required on first capture`
       );
-    n.panel.updateImage(l.data, h, a, l.flipY ?? !0, i);
+    s.panel.updateImage(o.data, r, d, o.flipY ?? !0, i);
   }
   removeBuffer(t) {
     this._slots.has(t) && (this._overlay.removeItem(t), this._slots.delete(t));
   }
   dispose() {
-    this._disposed = !0, this._active = !1, this._slots.clear(), this._overlay.dispose(), u._instance = null;
+    this._disposed = !0, this._active = !1, this._slots.clear(), this._overlay.dispose(), c._instance = null;
   }
   _getOrCreateSlot(t) {
     let e = this._slots.get(t);
     return e || (e = {
-      scheduler: new C(this._fps),
+      scheduler: new k(this._fps),
       panel: this._overlay.addItem(t)
     }, this._slots.set(t, e)), e;
   }
 };
-u._instance = null;
-let R = u;
-function A(r, t) {
-  const e = t.width, i = t.height, n = new Uint8Array(e * i * 4);
-  return r.readRenderTargetPixels(t, 0, 0, e, i, n), { data: n, width: e, height: i };
+c._instance = null;
+let B = c;
+function P(a, t) {
+  const e = t.width, i = t.height, s = new Uint8Array(e * i * 4);
+  return a.readRenderTargetPixels(t, 0, 0, e, i, s), { data: s, width: e, height: i };
 }
-function D(r, t) {
-  const e = r.getParameter(r.FRAMEBUFFER_BINDING);
-  t !== void 0 && r.bindFramebuffer(r.FRAMEBUFFER, t);
-  const i = r.drawingBufferWidth, n = r.drawingBufferHeight, s = new Uint8Array(i * n * 4);
-  return r.readPixels(0, 0, i, n, r.RGBA, r.UNSIGNED_BYTE, s), t !== void 0 && r.bindFramebuffer(r.FRAMEBUFFER, e), { data: s, width: i, height: n };
+function q(a, t) {
+  const e = a.getParameter(a.FRAMEBUFFER_BINDING);
+  t !== void 0 && a.bindFramebuffer(a.FRAMEBUFFER, t);
+  const i = a.drawingBufferWidth, s = a.drawingBufferHeight, n = new Uint8Array(i * s * 4);
+  return a.readPixels(0, 0, i, s, a.RGBA, a.UNSIGNED_BYTE, n), t !== void 0 && a.bindFramebuffer(a.FRAMEBUFFER, e), { data: n, width: i, height: s };
 }
-function q(r) {
+function F(a) {
   let t;
-  r instanceof HTMLCanvasElement || r instanceof OffscreenCanvas ? t = r.getContext("2d") : t = r;
-  const e = t.canvas.width, i = t.canvas.height, n = t.getImageData(0, 0, e, i);
-  return { data: new Uint8Array(n.data.buffer), width: e, height: i, flipY: !1 };
+  a instanceof HTMLCanvasElement || a instanceof OffscreenCanvas ? t = a.getContext("2d") : t = a;
+  const e = t.canvas.width, i = t.canvas.height, s = t.getImageData(0, 0, e, i);
+  return { data: new Uint8Array(s.data.buffer), width: e, height: i, flipY: !1 };
 }
 export {
-  R as BufferViewer,
-  q as readCanvas,
-  D as readPixels,
-  A as readRenderTarget
+  B as BufferViewer,
+  F as readCanvas,
+  q as readPixels,
+  P as readRenderTarget
 };

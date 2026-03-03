@@ -1,9 +1,28 @@
 {
-  "name": "canvas-buffer-viewer",
+  "name": "@craf-te/canvas-buffer-viewer",
   "version": "0.1.0",
   "description": "WebGL framebuffer/depth buffer visualization debug tool",
   "type": "module",
   "main": "./dist/index.cjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craf-te/canvas-buffer-viewer.git"
+  },
+  "homepage": "https://github.com/craf-te/canvas-buffer-viewer",
+  "bugs": {
+    "url": "https://github.com/craf-te/canvas-buffer-viewer/issues"
+  },
+  "keywords": [
+    "webgl",
+    "three.js",
+    "debug",
+    "framebuffer",
+    "depth-buffer",
+    "canvas"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
