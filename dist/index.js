@@ -37,6 +37,7 @@ const I = (
     transition: width 0.3s ease, height 0.3s ease, top 0.3s ease, left 0.3s ease;
   }
 
+
   /* Bottom position: header at bottom, content opens upward */
   :host([bottom]) .fbv-panel {
     flex-direction: column-reverse;
