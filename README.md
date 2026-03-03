@@ -1,11 +1,11 @@
 # Canvas Buffer Viewer 👀
 [![npm version](https://img.shields.io/badge/dynamic/json?color=blue&label=npm&prefix=v&query=version&suffix=%20&url=https%3A%2F%2Fraw.githubusercontent.com%2Fcraf-te%2Fcanvas-buffer-viewer%2Fmain%2Fpackage.json)](https://www.npmjs.com/package/@craf-te/canvas-buffer-viewer)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 [日本語](./README.ja.md)
 
 A lightweight debug tool for visualizing WebGL framebuffers, render targets, and Canvas2D contents in real-time. Perfect for debugging complex rendering pipelines and post-processing effects.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Features
 
