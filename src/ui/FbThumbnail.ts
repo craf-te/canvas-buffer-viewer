@@ -11,6 +11,7 @@ export class FbThumbnail extends HTMLElement {
   private _lastWidth = 0;
   private _lastHeight = 0;
   private _lastNote: string | undefined = undefined;
+  private _imageData: ImageData | null = null;
 
   constructor() {
     super();
@@ -102,19 +103,22 @@ export class FbThumbnail extends HTMLElement {
       }
     }
 
-    const imageData = this.ctx.createImageData(width, height);
+    // Reuse ImageData to reduce GC pressure
+    if (!this._imageData || this._imageData.width !== width || this._imageData.height !== height) {
+      this._imageData = this.ctx.createImageData(width, height);
+    }
 
     if (flipY) {
       for (let y = 0; y < height; y++) {
         const srcRow = (height - 1 - y) * width * 4;
         const dstRow = y * width * 4;
-        imageData.data.set(data.subarray(srcRow, srcRow + width * 4), dstRow);
+        this._imageData.data.set(data.subarray(srcRow, srcRow + width * 4), dstRow);
       }
     } else {
-      imageData.data.set(data);
+      this._imageData.data.set(data);
     }
 
-    this.ctx.putImageData(imageData, 0, 0);
+    this.ctx.putImageData(this._imageData, 0, 0);
   }
 
   dispose(): void {

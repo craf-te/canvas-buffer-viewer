@@ -9,7 +9,7 @@ class k {
     return t - this._lastCapture < this._interval ? !1 : (this._lastCapture = t, !0);
   }
 }
-const I = (
+const C = (
   /* css */
   `
   :host {
@@ -36,7 +36,6 @@ const I = (
     min-height: 120px;
     transition: width 0.3s ease, height 0.3s ease, top 0.3s ease, left 0.3s ease;
   }
-
 
   /* Bottom position: header at bottom, content opens upward */
   :host([bottom]) .fbv-panel {
@@ -202,7 +201,7 @@ const I = (
     cursor: nwse-resize;
   }
 `
-), T = (
+), I = (
   /* css */
   `
   :host {
@@ -296,9 +295,9 @@ const I = (
   }
 `
 );
-class A extends HTMLElement {
+class T extends HTMLElement {
   constructor() {
-    super(), this._label = "", this._lastWidth = 0, this._lastHeight = 0, this._lastNote = void 0, this.attachShadow({ mode: "open" });
+    super(), this._label = "", this._lastWidth = 0, this._lastHeight = 0, this._lastNote = void 0, this._imageData = null, this.attachShadow({ mode: "open" });
   }
   connectedCallback() {
     this._render();
@@ -317,7 +316,7 @@ class A extends HTMLElement {
   }
   _render() {
     this.shadowRoot && (this.shadowRoot.innerHTML = `
-      <style>${T}</style>
+      <style>${I}</style>
       <div class="fbv-buffer-header">
         <div class="fbv-buffer-label"></div>
         <div class="fbv-buffer-note" style="display: none;">
@@ -330,44 +329,43 @@ class A extends HTMLElement {
   _updateLabelText() {
     this._lastWidth > 0 && this._lastHeight > 0 ? this._labelEl.textContent = `${this._label} (${this._lastWidth}x${this._lastHeight})` : this._labelEl.textContent = this._label;
   }
-  updateImage(t, e, i, s = !0, n) {
-    if (!this.canvas) return;
-    (this.canvas.width !== e || this.canvas.height !== i) && (this.canvas.width = e, this.canvas.height = i), (this._lastWidth !== e || this._lastHeight !== i) && (this._lastWidth = e, this._lastHeight = i, this._updateLabelText()), this._lastNote !== n && (this._lastNote = n, n ? (this._noteEl.style.display = "block", this._noteTextEl.textContent = n, this._noteEl.title = n, this._noteTextEl.style.animation = "none", this._noteTextEl.offsetWidth, this._noteTextEl.style.animation = "") : (this._noteEl.style.display = "none", this._noteTextEl.textContent = "", this._noteEl.title = ""));
-    const o = this.ctx.createImageData(e, i);
-    if (s)
-      for (let r = 0; r < i; r++) {
-        const d = (i - 1 - r) * e * 4, l = r * e * 4;
-        o.data.set(t.subarray(d, d + e * 4), l);
-      }
-    else
-      o.data.set(t);
-    this.ctx.putImageData(o, 0, 0);
+  updateImage(t, e, i, s = !0, a) {
+    if (this.canvas) {
+      if ((this.canvas.width !== e || this.canvas.height !== i) && (this.canvas.width = e, this.canvas.height = i), (this._lastWidth !== e || this._lastHeight !== i) && (this._lastWidth = e, this._lastHeight = i, this._updateLabelText()), this._lastNote !== a && (this._lastNote = a, a ? (this._noteEl.style.display = "block", this._noteTextEl.textContent = a, this._noteEl.title = a, this._noteTextEl.style.animation = "none", this._noteTextEl.offsetWidth, this._noteTextEl.style.animation = "") : (this._noteEl.style.display = "none", this._noteTextEl.textContent = "", this._noteEl.title = "")), (!this._imageData || this._imageData.width !== e || this._imageData.height !== i) && (this._imageData = this.ctx.createImageData(e, i)), s)
+        for (let l = 0; l < i; l++) {
+          const h = (i - 1 - l) * e * 4, d = l * e * 4;
+          this._imageData.data.set(t.subarray(h, h + e * 4), d);
+        }
+      else
+        this._imageData.data.set(t);
+      this.ctx.putImageData(this._imageData, 0, 0);
+    }
   }
   dispose() {
     this.remove();
   }
 }
-customElements.get("fbv-thumbnail") || customElements.define("fbv-thumbnail", A);
-const R = "fbv-state", f = 420, u = 240, v = 12, M = 4, g = 4, C = 22;
-function H(a, t, e) {
+customElements.get("fbv-thumbnail") || customElements.define("fbv-thumbnail", T);
+const R = "fbv-state", f = 420, _ = 240, v = 12, M = 4, g = 4, A = 22;
+function D(n, t, e) {
   if (e <= 0) return { cols: 1, rows: 1, cellArea: 0 };
   if (e === 1) {
-    const o = a - g * 2, r = t - g * 2;
-    return { cols: 1, rows: 1, cellArea: o * r };
+    const l = n - g * 2, h = t - g * 2;
+    return { cols: 1, rows: 1, cellArea: l * h };
   }
-  const i = a - g * 2, s = t - g * 2;
-  let n = { cols: 1, rows: e, cellArea: 0 };
-  for (let o = 1; o <= e; o++) {
-    const r = Math.ceil(e / o), d = (i - M * (o - 1)) / o, l = (s - M * (r - 1)) / r;
-    if (d < 60 || l < 40) continue;
-    const h = d * l;
-    h > n.cellArea && (n = { cols: o, rows: r, cellArea: h });
+  const i = n - g * 2, s = t - g * 2;
+  let a = { cols: 1, rows: e, cellArea: 0 };
+  for (let l = 1; l <= e; l++) {
+    const h = Math.ceil(e / l), d = (i - M * (l - 1)) / l, o = (s - M * (h - 1)) / h;
+    if (d < 60 || o < 40) continue;
+    const r = d * o;
+    r > a.cellArea && (a = { cols: l, rows: h, cellArea: r });
   }
-  return n;
+  return a;
 }
-class $ extends HTMLElement {
+class H extends HTMLElement {
   constructor() {
-    super(), this._corner = "top-right", this._initialPosSet = !1, this._preMaxState = null, this._selectedLabel = null, this._resizeObserver = null, this.attachShadow({ mode: "open" }), this._state = this._loadState(), this._boundEscHandler = (t) => {
+    super(), this._corner = "top-right", this._initialPosSet = !1, this._preMaxState = null, this._selectedLabel = null, this._resizeObserver = null, this._itemsCache = /* @__PURE__ */ new Map(), this._rafPending = !1, this.attachShadow({ mode: "open" }), this._state = this._loadState(), this._boundEscHandler = (t) => {
       t.key === "Escape" && (this._selectedLabel !== null ? this.deselectItem() : this._state.maximized && this._toggleMaximize(!1));
     };
   }
@@ -387,7 +385,7 @@ class $ extends HTMLElement {
   _render() {
     if (!this.shadowRoot) return;
     this.shadowRoot.innerHTML = `
-      <style>${I}</style>
+      <style>${C}</style>
       <div class="fbv-panel">
         <div class="fbv-header">
           <button class="fbv-header-btn back-btn" title="リストに戻る" style="display:none;">←</button>
@@ -421,24 +419,24 @@ class $ extends HTMLElement {
     }), this._gridEl.addEventListener("click", (i) => {
       const s = i.target.closest("fbv-thumbnail");
       if (!s) return;
-      const n = s.dataset.label;
-      n && (this._selectedLabel === n ? this.deselectItem() : this.selectItem(n));
+      const a = s.dataset.label;
+      a && (this._selectedLabel === a ? this.deselectItem() : this.selectItem(a));
     });
   }
   // --- External API ---
   addThumbnail(t) {
     const e = document.createElement("fbv-thumbnail");
-    return e.label = t, e.dataset.label = t, this._gridEl.appendChild(e), this._updateGridColumns(), this._selectedLabel === t && this.selectItem(t), e;
+    return e.label = t, e.dataset.label = t, this._gridEl.appendChild(e), this._itemsCache.set(t, e), this._updateGridColumns(), this._selectedLabel === t && this.selectItem(t), e;
   }
   removeThumbnail(t) {
-    const e = this._gridEl.querySelector(`fbv-thumbnail[data-label="${t}"]`);
-    e && (this._selectedLabel === t && this.deselectItem(), e.remove(), this._updateGridColumns());
+    const e = this._itemsCache.get(t);
+    e && (this._selectedLabel === t && this.deselectItem(), e.remove(), this._itemsCache.delete(t), this._updateGridColumns());
   }
   get items() {
-    return this._gridEl ? Array.from(this._gridEl.querySelectorAll("fbv-thumbnail")) : [];
+    return Array.from(this._itemsCache.values());
   }
   getItem(t) {
-    return this.items.find((e) => e.label === t);
+    return this._itemsCache.get(t);
   }
   dispose() {
     this.remove();
@@ -454,12 +452,14 @@ class $ extends HTMLElement {
   // --- Internal State & Layout ---
   _updateGridColumns() {
     if (!this._gridEl || !this._panelEl) return;
-    const t = this._panelEl.clientWidth, e = this._panelEl.clientHeight - C, i = H(t, e, this.items.length);
+    const t = this._panelEl.clientWidth, e = this._panelEl.clientHeight - A, i = D(t, e, this.items.length);
     this._gridEl.style.gridTemplateColumns = `repeat(${i.cols}, 1fr)`, this._gridEl.style.gridTemplateRows = `repeat(${i.rows}, 1fr)`;
   }
   _initResizeObserver() {
     this._panelEl && (this._resizeObserver = new ResizeObserver(() => {
-      this._updateGridColumns();
+      this._rafPending || (this._rafPending = !0, requestAnimationFrame(() => {
+        this._updateGridColumns(), this._rafPending = !1;
+      }));
     }), this._resizeObserver.observe(this._panelEl));
   }
   _loadState() {
@@ -473,7 +473,7 @@ class $ extends HTMLElement {
     }
     return {
       width: f,
-      height: u,
+      height: _,
       top: null,
       left: null,
       minimized: !1,
@@ -493,7 +493,7 @@ class $ extends HTMLElement {
   _resetState() {
     this._state = {
       width: f,
-      height: u,
+      height: _,
       top: null,
       left: null,
       minimized: !1,
@@ -503,9 +503,9 @@ class $ extends HTMLElement {
   }
   _applyDefaultCornerPos() {
     if (!this._panelEl) return;
-    this._panelEl.style.width = `${f}px`, this._panelEl.style.height = `${u}px`, this._panelEl.style.right = "", this._panelEl.style.bottom = "";
-    const t = this._corner.indexOf("top") >= 0, e = this._corner.indexOf("left") >= 0, i = t ? v : window.innerHeight - u - v, s = e ? v : window.innerWidth - f - v;
-    this._panelEl.style.top = `${i}px`, this._panelEl.style.left = `${s}px`, this._state.top = i, this._state.left = s, this._state.width = f, this._state.height = u;
+    this._panelEl.style.width = `${f}px`, this._panelEl.style.height = `${_}px`, this._panelEl.style.right = "", this._panelEl.style.bottom = "";
+    const t = this._corner.indexOf("top") >= 0, e = this._corner.indexOf("left") >= 0, i = t ? v : window.innerHeight - _ - v, s = e ? v : window.innerWidth - f - v;
+    this._panelEl.style.top = `${i}px`, this._panelEl.style.left = `${s}px`, this._state.top = i, this._state.left = s, this._state.width = f, this._state.height = _;
   }
   _toggleMinimize(t, e = !0) {
     this._state.minimized = t, t ? (this.setAttribute("minimized", ""), this._minimizeBtn.style.display = "none", this._restoreBtn.style.display = "", this._state.maximized && this._toggleMaximize(!1, !1)) : (this.removeAttribute("minimized"), this._minimizeBtn.style.display = "", this._restoreBtn.style.display = "none"), e && this._saveState();
@@ -520,23 +520,23 @@ class $ extends HTMLElement {
   }
   // --- Drag & Drop ---
   _initDrag(t) {
-    let e = 0, i = 0, s = 0, n = 0;
-    const o = (l) => {
-      let h = s + (l.clientX - e), b = n + (l.clientY - i);
-      this._panelEl.style.left = `${h}px`, this._panelEl.style.top = `${b}px`;
-    }, r = () => {
-      this._panelEl.classList.remove("dragging"), document.removeEventListener("mousemove", o), document.removeEventListener("mouseup", r);
-      const l = this._panelEl.getBoundingClientRect();
-      this._state.left = l.left, this._state.top = l.top, this._saveState();
-    }, d = (l) => {
-      if (l.target.tagName.toLowerCase() === "button" || this._state.maximized) return;
-      l.preventDefault(), this._panelEl.classList.add("dragging");
-      const h = this._panelEl.getBoundingClientRect();
-      e = l.clientX, i = l.clientY, s = h.left, n = h.top, document.addEventListener("mousemove", o), document.addEventListener("mouseup", r);
+    let e = 0, i = 0, s = 0, a = 0;
+    const l = (o) => {
+      let r = s + (o.clientX - e), u = a + (o.clientY - i);
+      this._panelEl.style.left = `${r}px`, this._panelEl.style.top = `${u}px`;
+    }, h = () => {
+      this._panelEl.classList.remove("dragging"), document.removeEventListener("mousemove", l), document.removeEventListener("mouseup", h);
+      const o = this._panelEl.getBoundingClientRect();
+      this._state.left = o.left, this._state.top = o.top, this._saveState();
+    }, d = (o) => {
+      if (o.target.tagName.toLowerCase() === "button" || this._state.maximized) return;
+      o.preventDefault(), this._panelEl.classList.add("dragging");
+      const r = this._panelEl.getBoundingClientRect();
+      e = o.clientX, i = o.clientY, s = r.left, a = r.top, document.addEventListener("mousemove", l), document.addEventListener("mouseup", h);
     };
-    t.addEventListener("mousedown", d), this._panelEl.addEventListener("mousedown", (l) => {
-      const h = l.target;
-      h.closest(".fbv-grid") || h.closest(".fbv-resize") || h.closest(".fbv-header") || h.closest("fbv-thumbnail") || d(l);
+    t.addEventListener("mousedown", d), this._panelEl.addEventListener("mousedown", (o) => {
+      const r = o.target;
+      r.closest(".fbv-grid") || r.closest(".fbv-resize") || r.closest(".fbv-header") || r.closest("fbv-thumbnail") || d(o);
     });
   }
   // --- Resize ---
@@ -544,13 +544,13 @@ class $ extends HTMLElement {
     ["tl", "tr", "bl", "br"].forEach((e) => {
       var s;
       const i = (s = this.shadowRoot) == null ? void 0 : s.querySelector(`.fbv-resize-${e}`);
-      i && i.addEventListener("mousedown", (n) => {
+      i && i.addEventListener("mousedown", (a) => {
         if (this._state.maximized) return;
-        n.preventDefault(), n.stopPropagation(), this._panelEl.classList.add("resizing");
-        const o = n.clientX, r = n.clientY, d = this._panelEl.getBoundingClientRect(), l = d.width, h = d.height, b = d.top, x = d.left, y = (p) => {
-          const E = p.clientX - o, z = p.clientY - r;
-          let _ = l, m = h, L = b, S = x;
-          e === "tl" || e === "bl" ? (_ = Math.max(200, l - E), S = x + (l - _)) : _ = Math.max(200, l + E), e === "tl" || e === "tr" ? (m = Math.max(120, h - z), L = b + (h - m)) : m = Math.max(120, h + z), this._panelEl.style.width = `${_}px`, this._panelEl.style.height = `${m}px`, this._panelEl.style.top = `${L}px`, this._panelEl.style.left = `${S}px`;
+        a.preventDefault(), a.stopPropagation(), this._panelEl.classList.add("resizing");
+        const l = a.clientX, h = a.clientY, d = this._panelEl.getBoundingClientRect(), o = d.width, r = d.height, u = d.top, x = d.left, y = (p) => {
+          const E = p.clientX - l, z = p.clientY - h;
+          let m = o, b = r, L = u, S = x;
+          e === "tl" || e === "bl" ? (m = Math.max(200, o - E), S = x + (o - m)) : m = Math.max(200, o + E), e === "tl" || e === "tr" ? (b = Math.max(120, r - z), L = u + (r - b)) : b = Math.max(120, r + z), this._panelEl.style.width = `${m}px`, this._panelEl.style.height = `${b}px`, this._panelEl.style.top = `${L}px`, this._panelEl.style.left = `${S}px`;
         }, w = () => {
           this._panelEl.classList.remove("resizing"), document.removeEventListener("mousemove", y), document.removeEventListener("mouseup", w);
           const p = this._panelEl.getBoundingClientRect();
@@ -561,8 +561,8 @@ class $ extends HTMLElement {
     });
   }
 }
-customElements.get("fbv-panel") || customElements.define("fbv-panel", $);
-class D {
+customElements.get("fbv-panel") || customElements.define("fbv-panel", H);
+class P {
   constructor(t = "top-right") {
     this._panel = null, this._corner = t;
   }
@@ -594,7 +594,7 @@ class D {
 }
 const c = class c {
   constructor(t = {}) {
-    this._slots = /* @__PURE__ */ new Map(), this._disposed = !1, this._fps = t.fps ?? 10, this._overlay = new D(t.corner ?? "top-right"), this._active = !1, t.active !== !1 && (this.active = !0);
+    this._slots = /* @__PURE__ */ new Map(), this._disposed = !1, this._fps = t.fps ?? 10, this._overlay = new P(t.corner ?? "top-right"), this._active = !1, t.active !== !1 && (this.active = !0);
   }
   static getInstance(t) {
     return c._instance || (c._instance = new c(t)), c._instance;
@@ -623,14 +623,14 @@ const c = class c {
    */
   capture(t, e, i) {
     if (!this._active || this._disposed) return;
-    const s = this._getOrCreateSlot(t), n = performance.now();
-    if (!s.scheduler.shouldCapture(n)) return;
-    const o = e(), r = o.width ?? s.panel.lastWidth, d = o.height ?? s.panel.lastHeight;
-    if (!r || !d)
+    const s = this._getOrCreateSlot(t), a = performance.now();
+    if (!s.scheduler.shouldCapture(a)) return;
+    const l = e(), h = l.width ?? s.panel.lastWidth, d = l.height ?? s.panel.lastHeight;
+    if (!h || !d)
       throw new Error(
         `[BufferViewer] "${t}": width/height required on first capture`
       );
-    s.panel.updateImage(o.data, r, d, o.flipY ?? !0, i);
+    s.panel.updateImage(l.data, h, d, l.flipY ?? !0, i);
   }
   removeBuffer(t) {
     this._slots.has(t) && (this._overlay.removeItem(t), this._slots.delete(t));
@@ -648,25 +648,25 @@ const c = class c {
 };
 c._instance = null;
 let B = c;
-function P(a, t) {
+function $(n, t) {
   const e = t.width, i = t.height, s = new Uint8Array(e * i * 4);
-  return a.readRenderTargetPixels(t, 0, 0, e, i, s), { data: s, width: e, height: i };
+  return n.readRenderTargetPixels(t, 0, 0, e, i, s), { data: s, width: e, height: i };
 }
-function q(a, t) {
-  const e = a.getParameter(a.FRAMEBUFFER_BINDING);
-  t !== void 0 && a.bindFramebuffer(a.FRAMEBUFFER, t);
-  const i = a.drawingBufferWidth, s = a.drawingBufferHeight, n = new Uint8Array(i * s * 4);
-  return a.readPixels(0, 0, i, s, a.RGBA, a.UNSIGNED_BYTE, n), t !== void 0 && a.bindFramebuffer(a.FRAMEBUFFER, e), { data: n, width: i, height: s };
+function F(n, t) {
+  const e = n.getParameter(n.FRAMEBUFFER_BINDING);
+  t !== void 0 && n.bindFramebuffer(n.FRAMEBUFFER, t);
+  const i = n.drawingBufferWidth, s = n.drawingBufferHeight, a = new Uint8Array(i * s * 4);
+  return n.readPixels(0, 0, i, s, n.RGBA, n.UNSIGNED_BYTE, a), t !== void 0 && n.bindFramebuffer(n.FRAMEBUFFER, e), { data: a, width: i, height: s };
 }
-function F(a) {
+function O(n) {
   let t;
-  a instanceof HTMLCanvasElement || a instanceof OffscreenCanvas ? t = a.getContext("2d") : t = a;
+  n instanceof HTMLCanvasElement || n instanceof OffscreenCanvas ? t = n.getContext("2d") : t = n;
   const e = t.canvas.width, i = t.canvas.height, s = t.getImageData(0, 0, e, i);
   return { data: new Uint8Array(s.data.buffer), width: e, height: i, flipY: !1 };
 }
 export {
   B as BufferViewer,
-  F as readCanvas,
-  q as readPixels,
-  P as readRenderTarget
+  O as readCanvas,
+  F as readPixels,
+  $ as readRenderTarget
 };

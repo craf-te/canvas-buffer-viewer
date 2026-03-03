@@ -79,6 +79,8 @@ export class FbViewerPanel extends HTMLElement {
   private _selectedLabel: string | null = null;
   private _boundEscHandler: (e: KeyboardEvent) => void;
   private _resizeObserver: ResizeObserver | null = null;
+  private _itemsCache: Map<string, FbThumbnail> = new Map();
+  private _rafPending = false;
 
   constructor() {
     super();
@@ -199,6 +201,7 @@ export class FbViewerPanel extends HTMLElement {
     el.label = label;
     el.dataset.label = label;
     this._gridEl.appendChild(el);
+    this._itemsCache.set(label, el);
     this._updateGridColumns();
 
     // Restore selection if this item was previously selected
@@ -210,24 +213,24 @@ export class FbViewerPanel extends HTMLElement {
   }
 
   removeThumbnail(label: string): void {
-    const el = this._gridEl.querySelector(`fbv-thumbnail[data-label="${label}"]`);
+    const el = this._itemsCache.get(label);
     if (el) {
       // If removing the selected item, deselect first
       if (this._selectedLabel === label) {
         this.deselectItem();
       }
       el.remove();
+      this._itemsCache.delete(label);
       this._updateGridColumns();
     }
   }
 
   get items(): FbThumbnail[] {
-    if (!this._gridEl) return [];
-    return Array.from(this._gridEl.querySelectorAll('fbv-thumbnail')) as FbThumbnail[];
+    return Array.from(this._itemsCache.values());
   }
 
   getItem(label: string): FbThumbnail | undefined {
-    return this.items.find(i => i.label === label);
+    return this._itemsCache.get(label);
   }
 
   dispose(): void {
@@ -277,7 +280,13 @@ export class FbViewerPanel extends HTMLElement {
   private _initResizeObserver(): void {
     if (!this._panelEl) return;
     this._resizeObserver = new ResizeObserver(() => {
-      this._updateGridColumns();
+      // Throttle with requestAnimationFrame to avoid excessive calls during resize
+      if (this._rafPending) return;
+      this._rafPending = true;
+      requestAnimationFrame(() => {
+        this._updateGridColumns();
+        this._rafPending = false;
+      });
     });
     this._resizeObserver.observe(this._panelEl);
   }
