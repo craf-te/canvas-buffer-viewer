@@ -1,6 +1,7 @@
 {
   "name": "@craf-te/canvas-buffer-viewer",
-  "version": "0.1.1",
+  "author": "CRAF'TE",
+  "version": "1.0.0",
   "description": "WebGL framebuffer/depth buffer visualization debug tool",
   "type": "module",
   "main": "./dist/index.cjs",
