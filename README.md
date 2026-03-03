@@ -20,7 +20,7 @@ A lightweight debug tool for visualizing WebGL framebuffers, render targets, and
 ## Installation
 
 ```bash
-npm install canvas-buffer-viewer
+npm i @craf-te/canvas-buffer-viewer
 ```
 
 ## Quick Start
