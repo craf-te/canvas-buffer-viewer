@@ -44,7 +44,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bump version
-        run: npm version ${{ steps.bump.outputs.type }} -m "chore: bump version to %s"
+        run: npm version "${{ steps.bump.outputs.type }}" -m "chore: bump version to %s"
 
       - name: Push version commit and tag
         run: git push origin main --follow-tags
