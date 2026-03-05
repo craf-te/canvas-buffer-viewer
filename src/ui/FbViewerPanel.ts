@@ -140,7 +140,7 @@ export class FbViewerPanel extends HTMLElement {
       <div class="fbv-panel">
         <div class="fbv-header">
           <button class="fbv-header-btn back-btn" title="リストに戻る" style="display:none;">\u2190</button>
-          <span class="fbv-header-title">Framebuffer Viewer</span>
+          <span class="fbv-header-title">Buffer Viewer</span>
           <button class="fbv-header-btn reset-btn" title="Reset Position">\u21BA</button>
           <button class="fbv-header-btn minimize-btn" title="Minimize">\u2212</button>
           <button class="fbv-header-btn restore-btn" title="Restore" style="display:none;">\u25A1</button>
