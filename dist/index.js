@@ -1,3 +1,4 @@
+import { HalfFloatType as I } from "three";
 class k {
   constructor(t = 10) {
     this._lastCapture = 0, this._interval = 1e3 / t;
@@ -201,7 +202,7 @@ const C = (
     cursor: nwse-resize;
   }
 `
-), I = (
+), A = (
   /* css */
   `
   :host {
@@ -316,7 +317,7 @@ class T extends HTMLElement {
   }
   _render() {
     this.shadowRoot && (this.shadowRoot.innerHTML = `
-      <style>${I}</style>
+      <style>${A}</style>
       <div class="fbv-buffer-header">
         <div class="fbv-buffer-label"></div>
         <div class="fbv-buffer-note" style="display: none;">
@@ -329,12 +330,12 @@ class T extends HTMLElement {
   _updateLabelText() {
     this._lastWidth > 0 && this._lastHeight > 0 ? this._labelEl.textContent = `${this._label} (${this._lastWidth}x${this._lastHeight})` : this._labelEl.textContent = this._label;
   }
-  updateImage(t, e, i, s = !0, a) {
+  updateImage(t, e, i, n = !0, a) {
     if (this.canvas) {
-      if ((this.canvas.width !== e || this.canvas.height !== i) && (this.canvas.width = e, this.canvas.height = i), (this._lastWidth !== e || this._lastHeight !== i) && (this._lastWidth = e, this._lastHeight = i, this._updateLabelText()), this._lastNote !== a && (this._lastNote = a, a ? (this._noteEl.style.display = "block", this._noteTextEl.textContent = a, this._noteEl.title = a, this._noteTextEl.style.animation = "none", this._noteTextEl.offsetWidth, this._noteTextEl.style.animation = "") : (this._noteEl.style.display = "none", this._noteTextEl.textContent = "", this._noteEl.title = "")), (!this._imageData || this._imageData.width !== e || this._imageData.height !== i) && (this._imageData = this.ctx.createImageData(e, i)), s)
+      if ((this.canvas.width !== e || this.canvas.height !== i) && (this.canvas.width = e, this.canvas.height = i), (this._lastWidth !== e || this._lastHeight !== i) && (this._lastWidth = e, this._lastHeight = i, this._updateLabelText()), this._lastNote !== a && (this._lastNote = a, a ? (this._noteEl.style.display = "block", this._noteTextEl.textContent = a, this._noteEl.title = a, this._noteTextEl.style.animation = "none", this._noteTextEl.offsetWidth, this._noteTextEl.style.animation = "") : (this._noteEl.style.display = "none", this._noteTextEl.textContent = "", this._noteEl.title = "")), (!this._imageData || this._imageData.width !== e || this._imageData.height !== i) && (this._imageData = this.ctx.createImageData(e, i)), n)
         for (let l = 0; l < i; l++) {
-          const h = (i - 1 - l) * e * 4, d = l * e * 4;
-          this._imageData.data.set(t.subarray(h, h + e * 4), d);
+          const h = (i - 1 - l) * e * 4, r = l * e * 4;
+          this._imageData.data.set(t.subarray(h, h + e * 4), r);
         }
       else
         this._imageData.data.set(t);
@@ -346,24 +347,24 @@ class T extends HTMLElement {
   }
 }
 customElements.get("fbv-thumbnail") || customElements.define("fbv-thumbnail", T);
-const R = "fbv-state", f = 420, _ = 240, v = 12, M = 4, g = 4, A = 22;
-function D(n, t, e) {
+const M = "fbv-state", f = 420, u = 240, v = 12, R = 4, g = 4, D = 22;
+function H(s, t, e) {
   if (e <= 0) return { cols: 1, rows: 1, cellArea: 0 };
   if (e === 1) {
-    const l = n - g * 2, h = t - g * 2;
+    const l = s - g * 2, h = t - g * 2;
     return { cols: 1, rows: 1, cellArea: l * h };
   }
-  const i = n - g * 2, s = t - g * 2;
+  const i = s - g * 2, n = t - g * 2;
   let a = { cols: 1, rows: e, cellArea: 0 };
   for (let l = 1; l <= e; l++) {
-    const h = Math.ceil(e / l), d = (i - M * (l - 1)) / l, o = (s - M * (h - 1)) / h;
-    if (d < 60 || o < 40) continue;
-    const r = d * o;
-    r > a.cellArea && (a = { cols: l, rows: h, cellArea: r });
+    const h = Math.ceil(e / l), r = (i - R * (l - 1)) / l, o = (n - R * (h - 1)) / h;
+    if (r < 60 || o < 40) continue;
+    const d = r * o;
+    d > a.cellArea && (a = { cols: l, rows: h, cellArea: d });
   }
   return a;
 }
-class H extends HTMLElement {
+class P extends HTMLElement {
   constructor() {
     super(), this._corner = "top-right", this._initialPosSet = !1, this._preMaxState = null, this._selectedLabel = null, this._resizeObserver = null, this._itemsCache = /* @__PURE__ */ new Map(), this._rafPending = !1, this.attachShadow({ mode: "open" }), this._state = this._loadState(), this._boundEscHandler = (t) => {
       t.key === "Escape" && (this._selectedLabel !== null ? this.deselectItem() : this._state.maximized && this._toggleMaximize(!1));
@@ -389,7 +390,7 @@ class H extends HTMLElement {
       <div class="fbv-panel">
         <div class="fbv-header">
           <button class="fbv-header-btn back-btn" title="リストに戻る" style="display:none;">←</button>
-          <span class="fbv-header-title">Framebuffer Viewer</span>
+          <span class="fbv-header-title">Buffer Viewer</span>
           <button class="fbv-header-btn reset-btn" title="Reset Position">↺</button>
           <button class="fbv-header-btn minimize-btn" title="Minimize">−</button>
           <button class="fbv-header-btn restore-btn" title="Restore" style="display:none;">□</button>
@@ -417,9 +418,9 @@ class H extends HTMLElement {
     }), this._backBtn.addEventListener("click", (i) => {
       i.stopPropagation(), this.deselectItem();
     }), this._gridEl.addEventListener("click", (i) => {
-      const s = i.target.closest("fbv-thumbnail");
-      if (!s) return;
-      const a = s.dataset.label;
+      const n = i.target.closest("fbv-thumbnail");
+      if (!n) return;
+      const a = n.dataset.label;
       a && (this._selectedLabel === a ? this.deselectItem() : this.selectItem(a));
     });
   }
@@ -452,7 +453,7 @@ class H extends HTMLElement {
   // --- Internal State & Layout ---
   _updateGridColumns() {
     if (!this._gridEl || !this._panelEl) return;
-    const t = this._panelEl.clientWidth, e = this._panelEl.clientHeight - A, i = D(t, e, this.items.length);
+    const t = this._panelEl.clientWidth, e = this._panelEl.clientHeight - D, i = H(t, e, this.items.length);
     this._gridEl.style.gridTemplateColumns = `repeat(${i.cols}, 1fr)`, this._gridEl.style.gridTemplateRows = `repeat(${i.rows}, 1fr)`;
   }
   _initResizeObserver() {
@@ -464,7 +465,7 @@ class H extends HTMLElement {
   }
   _loadState() {
     try {
-      const t = sessionStorage.getItem(R);
+      const t = sessionStorage.getItem(M);
       if (t) {
         const e = JSON.parse(t);
         return "selectedLabel" in e || (e.selectedLabel = null), e;
@@ -473,7 +474,7 @@ class H extends HTMLElement {
     }
     return {
       width: f,
-      height: _,
+      height: u,
       top: null,
       left: null,
       minimized: !1,
@@ -483,7 +484,7 @@ class H extends HTMLElement {
   }
   _saveState() {
     try {
-      sessionStorage.setItem(R, JSON.stringify(this._state));
+      sessionStorage.setItem(M, JSON.stringify(this._state));
     } catch {
     }
   }
@@ -493,7 +494,7 @@ class H extends HTMLElement {
   _resetState() {
     this._state = {
       width: f,
-      height: _,
+      height: u,
       top: null,
       left: null,
       minimized: !1,
@@ -503,9 +504,9 @@ class H extends HTMLElement {
   }
   _applyDefaultCornerPos() {
     if (!this._panelEl) return;
-    this._panelEl.style.width = `${f}px`, this._panelEl.style.height = `${_}px`, this._panelEl.style.right = "", this._panelEl.style.bottom = "";
-    const t = this._corner.indexOf("top") >= 0, e = this._corner.indexOf("left") >= 0, i = t ? v : window.innerHeight - _ - v, s = e ? v : window.innerWidth - f - v;
-    this._panelEl.style.top = `${i}px`, this._panelEl.style.left = `${s}px`, this._state.top = i, this._state.left = s, this._state.width = f, this._state.height = _;
+    this._panelEl.style.width = `${f}px`, this._panelEl.style.height = `${u}px`, this._panelEl.style.right = "", this._panelEl.style.bottom = "";
+    const t = this._corner.indexOf("top") >= 0, e = this._corner.indexOf("left") >= 0, i = t ? v : window.innerHeight - u - v, n = e ? v : window.innerWidth - f - v;
+    this._panelEl.style.top = `${i}px`, this._panelEl.style.left = `${n}px`, this._state.top = i, this._state.left = n, this._state.width = f, this._state.height = u;
   }
   _toggleMinimize(t, e = !0) {
     this._state.minimized = t, t ? (this.setAttribute("minimized", ""), this._minimizeBtn.style.display = "none", this._restoreBtn.style.display = "", this._state.maximized && this._toggleMaximize(!1, !1)) : (this.removeAttribute("minimized"), this._minimizeBtn.style.display = "", this._restoreBtn.style.display = "none"), e && this._saveState();
@@ -520,37 +521,37 @@ class H extends HTMLElement {
   }
   // --- Drag & Drop ---
   _initDrag(t) {
-    let e = 0, i = 0, s = 0, a = 0;
+    let e = 0, i = 0, n = 0, a = 0;
     const l = (o) => {
-      let r = s + (o.clientX - e), u = a + (o.clientY - i);
-      this._panelEl.style.left = `${r}px`, this._panelEl.style.top = `${u}px`;
+      let d = n + (o.clientX - e), _ = a + (o.clientY - i);
+      this._panelEl.style.left = `${d}px`, this._panelEl.style.top = `${_}px`;
     }, h = () => {
       this._panelEl.classList.remove("dragging"), document.removeEventListener("mousemove", l), document.removeEventListener("mouseup", h);
       const o = this._panelEl.getBoundingClientRect();
       this._state.left = o.left, this._state.top = o.top, this._saveState();
-    }, d = (o) => {
+    }, r = (o) => {
       if (o.target.tagName.toLowerCase() === "button" || this._state.maximized) return;
       o.preventDefault(), this._panelEl.classList.add("dragging");
-      const r = this._panelEl.getBoundingClientRect();
-      e = o.clientX, i = o.clientY, s = r.left, a = r.top, document.addEventListener("mousemove", l), document.addEventListener("mouseup", h);
+      const d = this._panelEl.getBoundingClientRect();
+      e = o.clientX, i = o.clientY, n = d.left, a = d.top, document.addEventListener("mousemove", l), document.addEventListener("mouseup", h);
     };
-    t.addEventListener("mousedown", d), this._panelEl.addEventListener("mousedown", (o) => {
-      const r = o.target;
-      r.closest(".fbv-grid") || r.closest(".fbv-resize") || r.closest(".fbv-header") || r.closest("fbv-thumbnail") || d(o);
+    t.addEventListener("mousedown", r), this._panelEl.addEventListener("mousedown", (o) => {
+      const d = o.target;
+      d.closest(".fbv-grid") || d.closest(".fbv-resize") || d.closest(".fbv-header") || d.closest("fbv-thumbnail") || r(o);
     });
   }
   // --- Resize ---
   _initResize() {
     ["tl", "tr", "bl", "br"].forEach((e) => {
-      var s;
-      const i = (s = this.shadowRoot) == null ? void 0 : s.querySelector(`.fbv-resize-${e}`);
+      var n;
+      const i = (n = this.shadowRoot) == null ? void 0 : n.querySelector(`.fbv-resize-${e}`);
       i && i.addEventListener("mousedown", (a) => {
         if (this._state.maximized) return;
         a.preventDefault(), a.stopPropagation(), this._panelEl.classList.add("resizing");
-        const l = a.clientX, h = a.clientY, d = this._panelEl.getBoundingClientRect(), o = d.width, r = d.height, u = d.top, x = d.left, y = (p) => {
+        const l = a.clientX, h = a.clientY, r = this._panelEl.getBoundingClientRect(), o = r.width, d = r.height, _ = r.top, x = r.left, y = (p) => {
           const E = p.clientX - l, z = p.clientY - h;
-          let m = o, b = r, L = u, S = x;
-          e === "tl" || e === "bl" ? (m = Math.max(200, o - E), S = x + (o - m)) : m = Math.max(200, o + E), e === "tl" || e === "tr" ? (b = Math.max(120, r - z), L = u + (r - b)) : b = Math.max(120, r + z), this._panelEl.style.width = `${m}px`, this._panelEl.style.height = `${b}px`, this._panelEl.style.top = `${L}px`, this._panelEl.style.left = `${S}px`;
+          let m = o, b = d, L = _, S = x;
+          e === "tl" || e === "bl" ? (m = Math.max(200, o - E), S = x + (o - m)) : m = Math.max(200, o + E), e === "tl" || e === "tr" ? (b = Math.max(120, d - z), L = _ + (d - b)) : b = Math.max(120, d + z), this._panelEl.style.width = `${m}px`, this._panelEl.style.height = `${b}px`, this._panelEl.style.top = `${L}px`, this._panelEl.style.left = `${S}px`;
         }, w = () => {
           this._panelEl.classList.remove("resizing"), document.removeEventListener("mousemove", y), document.removeEventListener("mouseup", w);
           const p = this._panelEl.getBoundingClientRect();
@@ -561,8 +562,8 @@ class H extends HTMLElement {
     });
   }
 }
-customElements.get("fbv-panel") || customElements.define("fbv-panel", H);
-class P {
+customElements.get("fbv-panel") || customElements.define("fbv-panel", P);
+class $ {
   constructor(t = "top-right") {
     this._panel = null, this._corner = t;
   }
@@ -594,7 +595,7 @@ class P {
 }
 const c = class c {
   constructor(t = {}) {
-    this._slots = /* @__PURE__ */ new Map(), this._disposed = !1, this._fps = t.fps ?? 10, this._overlay = new P(t.corner ?? "top-right"), this._active = !1, t.active !== !1 && (this.active = !0);
+    this._slots = /* @__PURE__ */ new Map(), this._disposed = !1, this._fps = t.fps ?? 10, this._overlay = new $(t.corner ?? "top-right"), this._active = !1, t.active !== !1 && (this.active = !0);
   }
   static getInstance(t) {
     return c._instance || (c._instance = new c(t)), c._instance;
@@ -623,14 +624,14 @@ const c = class c {
    */
   capture(t, e, i) {
     if (!this._active || this._disposed) return;
-    const s = this._getOrCreateSlot(t), a = performance.now();
-    if (!s.scheduler.shouldCapture(a)) return;
-    const l = e(), h = l.width ?? s.panel.lastWidth, d = l.height ?? s.panel.lastHeight;
-    if (!h || !d)
+    const n = this._getOrCreateSlot(t), a = performance.now();
+    if (!n.scheduler.shouldCapture(a)) return;
+    const l = e(), h = l.width ?? n.panel.lastWidth, r = l.height ?? n.panel.lastHeight;
+    if (!h || !r)
       throw new Error(
         `[BufferViewer] "${t}": width/height required on first capture`
       );
-    s.panel.updateImage(l.data, h, d, l.flipY ?? !0, i);
+    n.panel.updateImage(l.data, h, r, l.flipY ?? !0, i);
   }
   removeBuffer(t) {
     this._slots.has(t) && (this._overlay.removeItem(t), this._slots.delete(t));
@@ -648,25 +649,38 @@ const c = class c {
 };
 c._instance = null;
 let B = c;
-function $(n, t) {
-  const e = t.width, i = t.height, s = new Uint8Array(e * i * 4);
-  return n.readRenderTargetPixels(t, 0, 0, e, i, s), { data: s, width: e, height: i };
+function F(s) {
+  const t = s >> 15 & 1, e = s >> 10 & 31, i = s & 1023;
+  return e === 0 ? (t ? -1 : 1) * Math.pow(2, -14) * (i / 1024) : e === 31 ? i ? NaN : t ? -1 / 0 : 1 / 0 : (t ? -1 : 1) * Math.pow(2, e - 15) * (1 + i / 1024);
 }
-function F(n, t) {
-  const e = n.getParameter(n.FRAMEBUFFER_BINDING);
-  t !== void 0 && n.bindFramebuffer(n.FRAMEBUFFER, t);
-  const i = n.drawingBufferWidth, s = n.drawingBufferHeight, a = new Uint8Array(i * s * 4);
-  return n.readPixels(0, 0, i, s, n.RGBA, n.UNSIGNED_BYTE, a), t !== void 0 && n.bindFramebuffer(n.FRAMEBUFFER, e), { data: a, width: i, height: s };
+function q(s, t) {
+  const e = t.width, i = t.height;
+  if (t.texture.type === I) {
+    const l = new Uint16Array(e * i * 4);
+    s.readRenderTargetPixels(t, 0, 0, e, i, l);
+    const h = new Uint8Array(e * i * 4);
+    for (let r = 0; r < l.length; r++)
+      h[r] = Math.min(255, Math.max(0, Math.round(F(l[r]) * 255)));
+    return { data: h, width: e, height: i };
+  }
+  const a = new Uint8Array(e * i * 4);
+  return s.readRenderTargetPixels(t, 0, 0, e, i, a), { data: a, width: e, height: i };
 }
-function O(n) {
+function G(s, t) {
+  const e = s.getParameter(s.FRAMEBUFFER_BINDING);
+  t !== void 0 && s.bindFramebuffer(s.FRAMEBUFFER, t);
+  const i = s.drawingBufferWidth, n = s.drawingBufferHeight, a = new Uint8Array(i * n * 4);
+  return s.readPixels(0, 0, i, n, s.RGBA, s.UNSIGNED_BYTE, a), t !== void 0 && s.bindFramebuffer(s.FRAMEBUFFER, e), { data: a, width: i, height: n };
+}
+function N(s) {
   let t;
-  n instanceof HTMLCanvasElement || n instanceof OffscreenCanvas ? t = n.getContext("2d") : t = n;
-  const e = t.canvas.width, i = t.canvas.height, s = t.getImageData(0, 0, e, i);
-  return { data: new Uint8Array(s.data.buffer), width: e, height: i, flipY: !1 };
+  s instanceof HTMLCanvasElement || s instanceof OffscreenCanvas ? t = s.getContext("2d") : t = s;
+  const e = t.canvas.width, i = t.canvas.height, n = t.getImageData(0, 0, e, i);
+  return { data: new Uint8Array(n.data.buffer), width: e, height: i, flipY: !1 };
 }
 export {
   B as BufferViewer,
-  O as readCanvas,
-  F as readPixels,
-  $ as readRenderTarget
+  N as readCanvas,
+  G as readPixels,
+  q as readRenderTarget
 };
